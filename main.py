@@ -5,7 +5,6 @@ from kivy.uix.webview import WebView
 
 class WebApp(App):
     def build(self):
-        # Create a full-screen WebView
         layout = BoxLayout(orientation='vertical')
         webview = WebView()
         webview.url = "https://testgpt-6u1q.onrender.com/"  # Replace with your desired URL
