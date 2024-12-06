@@ -28,6 +28,13 @@ jobs:
                gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav \
                gstreamer1.0-tools
 
+      - name: Install Android SDK and Build Tools
+        run: |
+          # Install Android SDK and build tools
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-29" "build-tools;29.0.3"
+          sdkmanager "tools" "platforms;android-29" "build-tools;29.0.3"
+          
       - name: Build APK
         run: |
           buildozer android debug
