@@ -32,7 +32,8 @@ jobs:
           buildozer android release
 
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: WebViewApp-APK
           path: bin/
+
