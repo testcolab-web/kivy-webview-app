@@ -1,3 +1,5 @@
+# This is the buildozer configuration file for the Kivy WebView app.
+# It defines the settings and dependencies needed to build the APK.
 
 [app]
 title = TestGPT
