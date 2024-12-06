@@ -3,54 +3,30 @@ name: Build APK
 on:
   push:
     branches:
-      - main
+      - main  # Trigger when pushing to the main branch
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use Ubuntu runner
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
+      - name: Set up Android SDK
+        uses: reactivecircus/android-sdk@v2  # This sets up Android SDK easily
 
       - name: Install dependencies
         run: |
           sudo apt update
           sudo apt install -y python3-pip openjdk-11-jdk git unzip
-          sudo apt install -y libffi-dev libssl-dev zlib1g-dev libjpeg-dev
-          sudo apt install -y libgstreamer1.0-dev libunwind-dev  # Fix missing dependency
-          pip install --upgrade cython buildozer
-          sudo apt install -y gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
-               gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav \
-               gstreamer1.0-tools
+          pip install cython buildozer
 
-      - name: Install Android SDK command-line tools
+      - name: Build APK using Buildozer
         run: |
-          # Install Android SDK command-line tools
-          mkdir -p $HOME/Android/Sdk
-          cd $HOME/Android/Sdk
-          wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-          unzip commandlinetools-linux-7583922_latest.zip
-          rm commandlinetools-linux-7583922_latest.zip
+          buildozer android debug  # Builds the APK
 
-          # Set up the environment
-          echo "ANDROID_HOME=$HOME/Android/Sdk" >> $GITHUB_ENV
-          echo "PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools" >> $GITHUB_ENV
-
-          # Accept licenses and install required SDK components
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-29" "build-tools;29.0.3"
-          
-      - name: Build APK
-        run: |
-          buildozer android debug
-          buildozer android release
-
-      - name: Upload APK
+      - name: Upload APK as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: WebViewApp-APK
