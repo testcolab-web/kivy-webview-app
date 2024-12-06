@@ -21,10 +21,12 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y python3-pip openjdk-11-jdk git unzip
+          sudo apt install -y libffi-dev libssl-dev zlib1g-dev libjpeg-dev
+          sudo apt install -y libgstreamer1.0-dev libunwind-dev  # Fix missing dependency
           pip install --upgrade cython buildozer
-          sudo apt install -y libffi-dev libssl-dev zlib1g-dev libjpeg-dev libgstreamer1.0-dev \
-               gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
-               gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-tools
+          sudo apt install -y gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+               gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav \
+               gstreamer1.0-tools
 
       - name: Build APK
         run: |
@@ -36,4 +38,3 @@ jobs:
         with:
           name: WebViewApp-APK
           path: bin/
-
